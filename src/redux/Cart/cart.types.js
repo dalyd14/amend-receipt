@@ -1,0 +1,7 @@
+export const ADD_CART = 'ADD_CART';
+export const REMOVE_CART = 'REMOVE_CART';
+export const ADD_VESSEL = 'ADD_VESSEL';
+export const REMOVE_VESSEL = 'REMOVE_VESSEL';
+
+export const CHANGE_CART_DETAILS = 'CHANGE_CART_DETAILS';
+export const CHANGE_VESSEL_DETAILS = 'CHANGE_VESSEL_DETAILS';
