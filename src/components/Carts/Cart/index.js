@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Card, Col, Row, Collapse, Form, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { MdDelete } from 'react-icons/md'
 import { GiMasonJar, GiSquareBottle, GiPaperBagFolded, GiCardboardBoxClosed } from 'react-icons/gi'
@@ -13,10 +13,15 @@ const Cart = ({ removeOldCart, addNewVessel, changeOldCartDetails, cart, appStat
 
     const [open, setOpen] = useState(false);
     const [cartDetails, setCartDetails] = useState({
+        cartID: cart.cartID,
         cartName: cart.cartName,
         email: cart.email,
         customer: cart.customer
     })
+
+    useEffect(() => {
+        handleCartDetails(cartDetails.cartID)
+    },[cartDetails]) 
 
     function handleRemoveCart(id) {
         removeOldCart(id)
@@ -127,11 +132,11 @@ const Cart = ({ removeOldCart, addNewVessel, changeOldCartDetails, cart, appStat
                                     })}}>
                                 </FormControl>
                             </InputGroup>
-                            <Button variant="primary" onClick={() => {
+                            {/* <Button variant="primary" onClick={() => {
                                     handleCartDetails(cart.cartID)
                                 }}>
                                 Save Changes
-                            </Button>
+                            </Button> */}
                         </Form>
                         <div>
                             <h4 className='my-3'>Add Vessel</h4>

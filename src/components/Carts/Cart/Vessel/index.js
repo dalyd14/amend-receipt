@@ -14,6 +14,7 @@ import './style.css'
 const Vessel = ({removeOldVessel, appState, vessel, cartID, changeOldVesselDetails }) => {
 
     const [vesselDetails, setVesselDetails] = useState({
+        vesselID: vessel.vesselID,
         vesselName: vessel.vesselName,
         tare: vessel.tare,
         product: vessel.product,
@@ -54,6 +55,10 @@ const Vessel = ({removeOldVessel, appState, vessel, cartID, changeOldVesselDetai
         })
     },[pickedProduct]) 
 
+    useEffect(() => {
+        handleVesselDetails(vesselDetails.vesselID)
+    }, [vesselDetails])
+
     let vesselTotal = 0
     let vesselProductId
     if (pickedProduct !== vessel.product) {
@@ -77,19 +82,19 @@ const Vessel = ({removeOldVessel, appState, vessel, cartID, changeOldVesselDetai
                     <Col sm={2} className="d-flex align-items-center">
                         <h5 className='my-0'>{vessel.vesselType.charAt(0).toUpperCase() + vessel.vesselType.slice(1)}</h5>
                     </Col>
-                    <Col sm={7}>
+                    <Col sm={9}>
                         <Form.Control placeholder={vesselDetails.vesselName} defaultValue={vesselDetails.vesselName} 
                             onChange={(e) => {setVesselDetails({
                                 ...vesselDetails,
                                 vesselName: e.target.value
                             })}} />
                     </Col>
-                    <Col className='d-flex'>
+                    {/* <Col className='d-flex'>
                         <Button id="saveBtn" variant="success" className='d-flex w-100 justify-content-center align-items-center' style={{fontSize:'20px'}}
                             onClick={() => {handleVesselDetails(vessel.vesselID)}}>
                             <BsCloudCheckFill/>
                         </Button>
-                    </Col>
+                    </Col> */}
                     <Col className='d-flex'>
                         <Button id="deleteBtn" variant="danger" className='d-flex w-100 justify-content-center align-items-center' style={{fontSize:'20px'}} 
                             onClick={() => {handleRemoveVessel({ vesselID: vessel.vesselID, cartID })}}>

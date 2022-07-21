@@ -72,6 +72,7 @@ const reducer = (state = INITIAL_STATE, action) => {
           })
           newDetailsVessels = action.vessel
           const oldDetailsVessels = newVesselDetailsCarts.find(cart => cart.cartID == action.cartID).vessels[vesselIndex] 
+          console.log(oldDetailsVessels, newDetailsVessels)
           newVesselDetailsCarts.find(cart => cart.cartID == action.cartID).vessels[vesselIndex] = {
             ...oldDetailsVessels,
             ...newDetailsVessels
