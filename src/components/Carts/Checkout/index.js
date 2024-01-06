@@ -4,6 +4,7 @@ import { Modal, Button, Form, ListGroup, Container, Col, Row } from 'react-boots
 import { connect } from 'react-redux'
 
 import { sendOrder } from '../../../utilities/apiRequests'
+import { printReceipt } from '../../../utilities/printReceipt'
 
 const Checkout = ({ appState, handleModalDisplay, show }) => {
 
@@ -11,6 +12,7 @@ const Checkout = ({ appState, handleModalDisplay, show }) => {
     const { carts } = appState.cart
 
     const [checkoutCart, setCheckoutCart] = useState({})
+    const [printReceiptBool, setPrintReceiptBool] = useState(false)
 
     const handleCheckoutChange = (cart) => {
         let cartTotal = 0
@@ -58,7 +60,7 @@ const Checkout = ({ appState, handleModalDisplay, show }) => {
 
         let dateTime = new Date()
 
-        dateTime = `${dateTime.getMonth()}/${dateTime.getDate()}/${dateTime.getFullYear()} ${dateTime.toLocaleTimeString()}`    
+        dateTime = `${dateTime.getMonth()+1}/${dateTime.getDate()}/${dateTime.getFullYear()} ${dateTime.toLocaleTimeString()}`    
 
         checkedOutCart.date = dateTime
         checkedOutCart.vessels = checkedOutCart.vessels.filter(ves => ves.product)
@@ -95,12 +97,15 @@ const Checkout = ({ appState, handleModalDisplay, show }) => {
 
         delete checkedOutCart.vessels
         
-        // console.log(checkedOutCart)
+        if (printReceiptBool) {
+            printReceipt(checkedOutCart)
+            setPrintReceiptBool(false)
+        }
         sendOrder(checkedOutCart)
     }
 
     return (
-        <Modal show={show} onHide={() => {handleCheckoutChange({}); handleModalDisplay()}}>
+        <Modal show={show} onHide={() => {handleCheckoutChange({}); handleModalDisplay(); setPrintReceiptBool(false)}}>
           <Modal.Header closeButton>
             <Modal.Title>Choose A Cart</Modal.Title>
           </Modal.Header>
@@ -181,7 +186,17 @@ const Checkout = ({ appState, handleModalDisplay, show }) => {
                 }
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="primary" onClick={() => { handleCheckout(); handleModalDisplay(); handleCheckoutChange({})}}>
+            <Form.Check
+                disabled={!Object.keys(checkoutCart).length}
+                type="checkbox"
+                defaultChecked={printReceiptBool}
+                label="Print Receipt"
+                onChange={(e) => { setPrintReceiptBool(e.target.checked) }}
+            />
+            <Button 
+                variant="primary"
+                disabled={!Object.keys(checkoutCart).length}
+                onClick={() => { handleCheckout(); handleModalDisplay(); handleCheckoutChange({})}}>
               Checkout
             </Button>
           </Modal.Footer>
